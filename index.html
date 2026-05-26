@@ -2099,7 +2099,7 @@ tr.total-row .b-dash{color:rgba(255,255,255,0.5)}
       <td><span class="b-dash">—</span></td>
       <td><span class="badge b-green">61,1%</span></td>
       <td><span class="b-dash">—</span></td>
-    </tr><tr class="total-row">
+   <!--- </tr><tr class="total-row">
     <td><strong>TOTAL</strong></td>
     <td><strong>302</strong></td>
     <td><strong>210</strong></td>
@@ -2109,7 +2109,7 @@ tr.total-row .b-dash{color:rgba(255,255,255,0.5)}
     <td><strong>2</strong></td>
     <td><span class="badge b-zero">0</span></td>
     <td><span class="badge b-green">69,5%</span></td>
-    <td><span class="badge b-red">0,0%</span></td>
+    <td><span class="badge b-red">0,0%</span></td> -->
   </tr></tbody></table></div>
       </div>
     </div>
@@ -2409,13 +2409,13 @@ const RAW_DATA = {
     "2026-04": { Leads:170, Descartes:24,  LeadsValidos:146, EmTentativa:99, EmAtendimento:40, Visita:1, Venda:0, Investimento:0    },
     "2026-05": { Leads:171, Descartes:102,  LeadsValidos:69, EmTentativa:59, EmAtendimento:10, Visita:2, Venda:1, Investimento:1071  },
   },
- // "Gávea": {
-  // "2026-01": { Leads:322, Descartes:221, LeadsValidos:101,EmTentativa:0,  EmAtendimento:0,  Visita:5, Venda:0, Investimento:0    },
-  //  "2026-02": { Leads:342, Descartes:264, LeadsValidos:78, EmTentativa:0,  EmAtendimento:0,  Visita:4, Venda:0, Investimento:0    },
-   // "2026-03": { Leads:291, Descartes:190, LeadsValidos:101,EmTentativa:0,  EmAtendimento:0,  Visita:2, Venda:0, Investimento:0    },
-   // "2026-04": { Leads:0,   Descartes:0,   LeadsValidos:0,  EmTentativa:0,  EmAtendimento:0,  Visita:0, Venda:1, Investimento:0    },
-   // "2026-05": { Leads:0,   Descartes:0,   LeadsValidos:0,  EmTentativa:0,  EmAtendimento:0,  Visita:0, Venda:1, Investimento:0    },
-  //}
+  /* "Gávea": {
+   "2026-01": { Leads:322, Descartes:221, LeadsValidos:101,EmTentativa:0,  EmAtendimento:0,  Visita:5, Venda:0, Investimento:0    },
+   "2026-02": { Leads:342, Descartes:264, LeadsValidos:78, EmTentativa:0,  EmAtendimento:0,  Visita:4, Venda:0, Investimento:0    },
+   "2026-03": { Leads:291, Descartes:190, LeadsValidos:101,EmTentativa:0,  EmAtendimento:0,  Visita:2, Venda:0, Investimento:0    },
+    "2026-04": { Leads:0,   Descartes:0,   LeadsValidos:0,  EmTentativa:0,  EmAtendimento:0,  Visita:0, Venda:1, Investimento:0    },
+    "2026-05": { Leads:0,   Descartes:0,   LeadsValidos:0,  EmTentativa:0,  EmAtendimento:0,  Visita:0, Venda:1, Investimento:0    },
+  } */
 };
 
 // ========================================================
@@ -4151,7 +4151,7 @@ function renderEmpDetail() {
   const dTBadge = totRow.Leads ? `<span class="badge ${dT<=.70?'b-green':'b-red'}">${pct(totRow.Descartes,totRow.Leads)}</span>` : `<span class="b-dash">—</span>`;
   const vTBadge = totRow.Visita ? `<span class="badge ${vT>=.01?'b-green':'b-red'}">${pct(totRow.Venda,totRow.Visita)}</span>` : `<span class="b-dash">—</span>`;
   const vTCell = totRow.Venda > 0 ? `<span class="badge b-green">${totRow.Venda}</span>` : `<span class="badge b-zero">${totRow.Venda}</span>`;
-  tbody+=`<tr class="total-row">
+ /* tbody+=`<tr class="total-row">
     <td><strong>TOTAL</strong></td>
     <td><strong>${fmt(totRow.Leads)}</strong></td>
     <td><strong>${fmt(totRow.Descartes)}</strong></td>
@@ -4161,8 +4161,8 @@ function renderEmpDetail() {
     <td><strong>${fmt(totRow.Visita)}</strong></td>
     <td>${vTCell}</td>
     <td>${dTBadge}</td>
-    <td>${vTBadge}</td>
-  </tr></tbody>`;
+    <td>${vTBadge}</td> 
+  </tr></tbody>`; */
   document.getElementById('empTable').innerHTML = thead+tbody;
 
   }); // fim requestAnimationFrame
