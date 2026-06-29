@@ -2036,7 +2036,7 @@ const RAW_DATA = {
     "2026-03": { Leads:75,  Descartes:13,  LeadsValidos:62, EmTentativa:32,  EmAtendimento:32,  Visita:0, Venda:0, VisitaOff:0, VendaOff:0, Investimento:0    },
     "2026-04": { Leads:28,  Descartes:6,  LeadsValidos:22, EmTentativa:18,  EmAtendimento:4,  Visita:0, Venda:0, VisitaOff:0, VendaOff:0, Investimento:0    },
     "2026-05": { Leads:45,  Descartes:32,  LeadsValidos:13, EmTentativa:5,  EmAtendimento:6,  Visita:0, Venda:0, VisitaOff:0, VendaOff:0, Investimento:13499.33 },
-    "2026-06": { Leads:162, Descartes:83,  LeadsValidos:79, EmTentativa:41, EmAtendimento:38, Visita:0, Venda:0, VisitaOff:12, VendaOff:0, Investimento:8418.81 },
+    "2026-06": { Leads:162, Descartes:83,  LeadsValidos:79, EmTentativa:41, EmAtendimento:38, Visita:0, Venda:0, VisitaOff:29, VendaOff:0, Investimento:8418.81 },
   },
   "AR Ipanema": {
     "2026-01": { Leads:144, Descartes:102,  LeadsValidos:46, EmTentativa:18,  EmAtendimento:23,  Visita:5, Venda:0, VisitaOff:0, VendaOff:0, Investimento:0    },
@@ -2074,6 +2074,15 @@ const EM_ATENDIMENTO_AGORA = {
   "Insigna":       38,
   "AR Ipanema":    0,
   "A Noite":      59,
+};
+
+// ========================================================
+// VISITAS OFF — desmembramento por tipo (Espontâneas vs Agendamentos)
+// ========================================================
+const VISITAS_OFF_BREAKDOWN = {
+  "Insigna": {
+    "2026-06": { total: 29, Espontaneas: 15, Agendamentos: 14 }
+  }
 };
 
 // Months available in the dataset (YYYY-MM format)
@@ -3576,6 +3585,12 @@ function renderEmpDetail() {
       </div>
     </div>
 
+    <!-- Linha 1.5: Desmembramento Visitas Off -->
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-title">Visitas Off — Desmembramento — ${emp}</div>
+      <div class="chart-wrap" style="height:200px"><canvas id="empVisitaOffBreakdownChart"></canvas></div>
+    </div>
+
     <!-- Linha 2: Vendas e Vendas Off -->
     <div class="g2" style="margin-bottom:16px">
       <div class="card">
@@ -3773,6 +3788,60 @@ function renderEmpDetail() {
       {label:'Visitas Off',data:months.map(m=>RAW_DATA[emp]?.[m]?.VisitaOff||0),backgroundColor:METRIC_COLORS.VisitaOff,borderRadius:2},
     ]},
     options:{...baseOpts}
+  });
+
+  // VisitaOff breakdown chart (Espontâneas vs Agendamentos)
+  dc('empVisitaOffBreakdownChart');
+  const voBreakdown = VISITAS_OFF_BREAKDOWN[emp]?.[mesMaisRecente] || { total: 0, Espontaneas: 0, Agendamentos: 0 };
+  const voTotal = voBreakdown.total || (voBreakdown.Espontaneas + voBreakdown.Agendamentos) || RAW_DATA[emp]?.[mesMaisRecente]?.VisitaOff || 0;
+  charts.empVisitaOffBreakdownChart = new Chart(document.getElementById('empVisitaOffBreakdownChart'),{
+    type:'doughnut',
+    data:{
+      labels:['Espontâneas','Agendamentos'],
+      datasets:[{
+        data:[voBreakdown.Espontaneas, voBreakdown.Agendamentos],
+        backgroundColor:['#d62566','#8a1042'],
+        borderColor:'rgba(10,10,10,0.8)',
+        borderWidth:2,
+        hoverOffset:4
+      }]
+    },
+    options:{
+      responsive:true,
+      maintainAspectRatio:false,
+      cutout:'60%',
+      plugins:{
+        legend:{position:'right',labels:{color:'rgba(255,255,255,0.75)',font:{family:'Inter',size:12},boxWidth:14,padding:16}},
+        title:{display:false},
+        tooltip:{
+          callbacks:{
+            label:function(ctx){
+              const val = ctx.raw || 0;
+              const pct = voTotal ? ((val/voTotal)*100).toFixed(1) : 0;
+              return `${ctx.label}: ${val} (${pct}%)`;
+            }
+          }
+        }
+      }
+    },
+    plugins:[{
+      id:'centerText',
+      beforeDraw:function(chart){
+        const {ctx, chartArea:{width,height}} = chart;
+        const cx = chart.getDatasetMeta(0).data[0].x;
+        const cy = chart.getDatasetMeta(0).data[0].y;
+        ctx.save();
+        ctx.textAlign='center';
+        ctx.textBaseline='middle';
+        ctx.font="bold 22px Inter,sans-serif";
+        ctx.fillStyle='#fff';
+        ctx.fillText(voTotal, cx, cy - 8);
+        ctx.font="12px Inter,sans-serif";
+        ctx.fillStyle='rgba(255,255,255,0.55)';
+        ctx.fillText('Total', cx, cy + 12);
+        ctx.restore();
+      }
+    }]
   });
 
   // VendaOff chart (novo)
