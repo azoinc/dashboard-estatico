@@ -3669,7 +3669,6 @@ function renderEmpDetail() {
     {label:'Em Tentativa de Atend.', key:'EmTentativa',   ref:null, base:null,             val:dm.EmTentativa,   isSnapshot:true },
     {label:'Em Atendimento',         key:'EmAtendimento', ref:null, base:null,             val:dm.EmAtendimento, isSnapshot:true },
     {label:'Visitas',                key:'Visita',        ref:.10,  base:dm.LeadsValidos,  val:dm.Visita,        refDir:'gte' },
-    {label:'Visitas Off',            key:'VisitaOff',     ref:null, base:null,             val:dm.VisitaOff,     isSnapshot:true },
     {label:'Vendas',                 key:'Venda',         ref:.01,  base:dm.Visita,        val:dm.Venda,         refDir:'gte' },
   ];
   document.getElementById('empKpiGrid').innerHTML = kpis.map((k,i)=>{
