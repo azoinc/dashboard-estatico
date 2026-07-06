@@ -2275,7 +2275,7 @@ function loadInvestment() {
       "2026-04": 18938,
       "2026-05": 14197.27,
       "2026-06": 11790.23,
-      "2026-07": 0
+      "2026-07": 1686.53
     },
     "Vërtër": {
       "2026-01": 3415,
@@ -2284,7 +2284,7 @@ function loadInvestment() {
       "2026-04": 4035,
       "2026-05": 3171.99,
       "2026-06": 1434.09,
-      "2026-07": 0
+      "2026-07": 182.25
     },
     "Ares": {
       "2026-01": 2890,
@@ -2293,7 +2293,7 @@ function loadInvestment() {
       "2026-04": 4468,
       "2026-05": 3156.15,
       "2026-06": 2853.45,
-      "2026-07": 0
+      "2026-07": 375.16
     },
     "AR Ipanema": {
       "2026-01": 13595,
@@ -2311,7 +2311,7 @@ function loadInvestment() {
       "2026-04": 1625,
       "2026-05": 1896.31,
       "2026-06": 1707.59,
-      "2026-07": 0
+      "2026-07": 260.19
     },
     "Insigna": {
       "2026-01": 9222,
@@ -2320,7 +2320,7 @@ function loadInvestment() {
       "2026-04": 12890,
       "2026-05": 13499.33,
       "2026-06": 11223.82,
-      "2026-07": 0
+      "2026-07": 2163.96
     }
   };
   // Valores fixos — não sobrescreve com localStorage para garantir visibilidade a todos
@@ -3518,7 +3518,10 @@ function renderEmpDetail() {
           <div class="hec-list">
             ${(() => {
               const lastMonth = ALL_MONTHS[ALL_MONTHS.length - 1];
-              return monthsRanked.slice(0,6).map((mo,i) => {
+              // Garante que julho (último mês) sempre seja incluído na lista
+              const hasJuly = monthsRanked.some(m => m.month === lastMonth);
+              const displayMonths = hasJuly ? monthsRanked : [...monthsRanked, { month: lastMonth, label: MONTH_LABELS[lastMonth], leads: 0, validos: 0, vendas: 0 }];
+              return displayMonths.slice(0,7).map((mo,i) => {
                 const isTop = mo.month === lastMonth;
                 const featured = isTop ? 'featured' : '';
                 const pctL = pct(mo.leads, totalLeads);
